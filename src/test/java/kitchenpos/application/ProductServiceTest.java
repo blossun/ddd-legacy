@@ -24,7 +24,6 @@ class ProductServiceTest {
 
     private PurgomalumClient purgomalumClient = new FakePurgomalumClient();
 
-    //    @InjectMocks
     private ProductService productService;
 
     @BeforeEach
@@ -35,9 +34,7 @@ class ProductServiceTest {
     @DisplayName("상품을 등록할 수 있다.")
     @Test
     void create() {
-        final Product expected = new Product();
-        expected.setName("후라이드");
-        expected.setPrice(BigDecimal.valueOf(16_000L));
+        final Product expected = createProductRequest("후라이드", 16_000L);
 
         final Product actual = productService.create(expected);
         assertThat(actual).isNotNull();
@@ -53,9 +50,7 @@ class ProductServiceTest {
     @NullSource
     @ParameterizedTest
     void create(final BigDecimal price) {
-        final Product expected = new Product();
-        expected.setName("후라이드");
-        expected.setPrice(price);
+        final Product expected = createProductRequest("후라이드", price);
 
         assertThatThrownBy(() -> productService.create(expected))
                 .isInstanceOf(IllegalArgumentException.class);
@@ -65,11 +60,20 @@ class ProductServiceTest {
     @ValueSource(strings = {"비속어", "욕설이 포함된 이름"})
     @ParameterizedTest
     void create(final String name) {
-        final Product expected = new Product();
-        expected.setName(name);
-        expected.setPrice(BigDecimal.valueOf(16_000L));
+        final Product expected = createProductRequest(name, 16_000L);
 
         assertThatThrownBy(() -> productService.create(expected))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    private Product createProductRequest(final String name, final long price) {
+        return createProductRequest(name, BigDecimal.valueOf(price));
+    }
+
+    private Product createProductRequest(final String name, final BigDecimal price) {
+        final Product product = new Product();
+        product.setName(name);
+        product.setPrice(price);
+        return product;
     }
 }
