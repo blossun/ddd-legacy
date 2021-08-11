@@ -17,8 +17,7 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
-    @Mock
-    private ProductRepository productRepository;
+    private ProductRepository productRepository = new InMemoryProductRepository();
 
     @Mock
     private MenuRepository menuRepository;
