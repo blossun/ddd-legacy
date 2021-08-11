@@ -19,8 +19,7 @@ import static org.mockito.Mockito.verify;
 class ProductServiceTest {
     private ProductRepository productRepository = new InMemoryProductRepository();
 
-    @Mock
-    private MenuRepository menuRepository;
+    private MenuRepository menuRepository = new InMemoryMenuRepository();
 
     @Mock
     private PurgomalumClient purgomalumClient;
